@@ -286,25 +286,27 @@ seq(0,10, 2)
 1.  Print every 5th number between 1 and 100.
 
 ```{r}
-
+seq(1,100,by=5) #correct
+seq(0,100, by=5) #makes Amanda feel better
 ```
 
 2.  Use code to write I love statistics 4 times.
 
 ```{r}
-
+rep("I love statistics", 4)
 ```
 
 3.  Repeat the numbers 1-10 twice
 
 ```{r}
-
+rep(seq(1,10,1),2)
+rep(1:10,2)
 ```
 
 4.  Print every 3rd number from 1-20 3 times.
 
 ```{r}
-
+rep(seq(1,20,3),3)
 ```
 
 ###Learning Outcome 3: Explain the differences between variables,
