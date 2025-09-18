@@ -439,37 +439,41 @@ cookieData$cookiesEaten[9]
 
 ```{r}
 
+iceCream<- "cookie dough"
+iceCream
 ```
 
 2.  Create two vectors: 1 vector should contain the names of four TV
     shows and the 2nd vector should contain your ratings for those shows
 
 ```{r}
-
+TV<- c("friends","the office", "breaking bad", "new girl")
+ratings<- c(4, 4, 4.5, 5)
 ```
 
 3.  Make these vectors into a data frame.
 
 ```{r}
-
+TvShowData<- cbind.data.frame(TV, ratings)
+TvShowData
 ```
 
 4.  Print the information in the 2nd row.
 
 ```{r}
-
+TvShowData[2,]
 ```
 
 5.  Print the information in the 2nd column.
 
 ```{r}
-
+TvShowData[,2]
 ```
 
 Bonus: Print the information in the 3rd row, 1st column.
 
 ```{r}
-
+TvShowData[3,1]
 ```
 
 ###Learning Outcome 4: Explain how to obtain a subset of your data
@@ -486,7 +490,9 @@ For instance, we could use indexing to get only cars in the mtcars
 dataset with 4 gears.
 
 ```{r}
-
+mtcars[mtcars$gear==4,]
+fourGear<- mtcars[mtcars$gear==4,]
+#selective about row, but want all info across the columns
 ```
 
 In this case, you'll notice that I put a comma after the logical
@@ -502,6 +508,8 @@ following:`subset(dataframe, condition)`
 
 ```{r}
 #five gears and 6 cyl
+fiveGearSixCyl<- subset(mtcars, mtcars$gear== 5 & mtcars$cyl==6)
+fiveGearSixCyl
 ```
 
 can combine logical statements in all the ways we talked about before
