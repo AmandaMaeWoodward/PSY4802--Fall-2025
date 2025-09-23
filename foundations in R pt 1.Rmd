@@ -512,6 +512,27 @@ fiveGearSixCyl<- subset(mtcars, mtcars$gear== 5 & mtcars$cyl==6)
 fiveGearSixCyl
 ```
 
+## Practice:
+1. create a subset of data from mtcars that contains all cars with less than 25 mpg. 
+```{r}
+lessthan25mpg<- subset(mtcars, mtcars$mpg< 25)
+```
+
+
+2. create a subset of data with all cars that have an automatic transmission
+```{r}
+subset(mtcars, mtcars$am<1)
+class(mtcars$am)
+subset(mtcars, mtcars$am==0)
+```
+
+3. create a subset of data with all cars that have at least  100 horsepower and 4 gears. 
+```{r}
+carhpg<- subset(mtcars, mtcars$hp>=100 & mtcars$gear==4)
+carhpg
+```
+
+
 can combine logical statements in all the ways we talked about before
 
 **A Note on Pipes (more advanced)** If not, we're going to talk about
@@ -533,6 +554,7 @@ After that, we need to use the library command to load the package
 
 ```{r}
 #install.packages("tidyverse")
+library(tidyverse)
 ```
 
 We can use filter and select to subset data with pipes.
@@ -540,17 +562,24 @@ We can use filter and select to subset data with pipes.
 We can use `filter()` to pick a subset of rows:
 
 ```{r}
-
+mtcars %>% filter(gear==5)
+gearFive<- mtcars %>% filter(gear==5)
 ```
 
 We can use `select()` to pick a subset of columns:
 
 ```{r}
-
+mtcars %>% select(mpg, hp)
 ```
 
 ```{r}
+mtcars %>% 
+  filter(gear==5) %>% 
+  select(mpg, hp)
+```
 
+```{r}
+filter(mtcars, mtcars$gear==5) #this also works 
 ```
 
 #### Learning Outcome 4 Practice:
@@ -558,25 +587,26 @@ We can use `select()` to pick a subset of columns:
 1.  Load the ChickWeight dataset.
 
 ```{r}
-
+data(ChickWeight)
 ```
 
 2.  Create a subset of data that contains information for Chick 8
 
 ```{r}
-
+ChickWeight %>% filter(Chick==8)
 ```
 
 3.  Create a subset of data for Diet 2 only.
 
 ```{r}
-
+ChickWeight%>% filter(Diet==2)
 ```
 
 4.  Create a subset of data for all chicks weighing less than 100 gm.
 
 ```{r}
-
+lightWeight<- subset(ChickWeight, weight<100)
+lightWeight
 ```
 
 ### Learning Outcome 5: Describe your data effectively
