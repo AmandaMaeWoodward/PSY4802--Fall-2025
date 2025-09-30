@@ -94,20 +94,22 @@ penguins %>% select(billLengthMm, billDepthMm, billInfo)
 
 1. Change all of the column names in mtcars to capital letters
 ```{r}
-
+data(mtcars)
+colnames(mtcars)<- toupper(colnames(mtcars))
 ```
 2. Change the name of the 9th column to reflect the values in the am column description
 ```{r}
-
+colnames(mtcars)[9]<- "transmission"
 ```
 
 3. Change the 4th column name to all lowercase letters 
 ```{r}
-
+colnames(mtcars)[4]<-"hp"
+tolower(colnames(mtcars)[4]) #this isn't saving it 
 ```
 
 ```{r}
-
+colnames(mtcars)<- tolower(colnames(mtcars))
 ```
 
 ## Learning Outcome 2: Explain different classes of variables and how to change the class
@@ -127,37 +129,57 @@ We talked about this a little bit last week, but there are different classes (ty
 
 You can check the class of your data using `class()`
 ```{r}
-
+class(mtcars$transmission)
 ```
 
 If you want to change the class of your variable, you can assign `as.Preferredclass(dataframe$column)` to the column name
 
 ```{r}
 "is.classname"
+is.factor(mtcars$transmission)
 
 "as.classname"
 #make a new column 
+mtcars$transmission<- as.factor(mtcars$transmission)
+mtcars$transmission
 
+mtcars$transmission<- factor(mtcars$transmission)
+class(mtcars$transmission)
+# going from factor to numeric can cause issues and there's a specific way to do it
 ```
 **DOUBLE CHECK YOUR DATA**
 ```{r}
+mtcars$transmission2<- as.numeric(mtcars$transmission)
+mtcars$transmission2
 
+mtcars %>% select(transmission, transmission2) #compare before saving
+
+levels(mtcars$transmission)# gives us the levels of a factor
+
+#preserving the value rather than the category position
+mtcars$transmission3<-  as.numeric(levels(mtcars$transmission)[mtcars$transmission])
+mtcars %>% select(transmission, transmission3) #compare before saving
+
+#mtcars$am<- as.factor(mtcars$am) #check your column names
 ```
 
 ### Learning Outcome 2 Practice:
 1. Check the class of the horsepower column (hp) 
 ```{r}
-
+is.factor(mtcars$hp)
+class(mtcars$hp)
 ```
 
 2. Change the class of horsepower to a factor
 ```{r}
+mtcars$hp2<- as.factor(mtcars$hp)
 
 ```
 
 3. Look at summaries of horsepower as a factor and as a number. What do you notice? 
 ```{r}
-
+summary(mtcars$hp)
+summary(mtcars$hp2)
 ```
 
 
@@ -176,47 +198,57 @@ You can make a simple function that adds two to a set of numbers
 Before we make the function, we'll make a vector of numbers (1-10) as our input
 
 ```{r}
-
+oneToTen<- 1:10
 ```
 
 then, we'll name our function addTwo and give it one argument or input
 
 ```{r}
-
+addTwo<- function(number){
+number + 2  
+}
 ```
 if we run this correctly, it should show up in the environment (top right). 
 
 Then, we can use our function to add two to our vector:
 
 ```{r}
-
+addTwo(7)
+addTwo(oneToTen)
 ```
 
 One thing to note- anything you make in a function **stays in the function.** If you want to save it to a dataframe, you treat your new function just like any other R function (i.e. you need to assign the output to a column or variable)
 
 ```{r}
 "dataframe$column <- function"
-
+onePlusTwo<- addTwo(oneToTen)
 ```
 
 ## Practice:
 function to multiply by 7
 ```{r}
-
+bySeven<- function(number){
+  number* 7
+}
 ```
 test it out
 ```{r}
-
+bySeven(4)
 ```
 
+Functions w/ characters
 **my favorite is**
 `paste()`
 ```{r}
-
+myFavorite<- function(thing){
+  paste("My favorite food is",thing)
+}
 ```
 test
 ```{r}
+myFavorite("dumplings")
 
+# c("my favorite food is", "dumplings") could work, but annoying
 ```
 
 ### Multiple argument functions
@@ -224,6 +256,19 @@ test
 We can make functions with more than one argument. For instance we could multiply all of the numbers in our original vector by a second vector 10-1
 
 ```{r}
+tenToOne<- 10:1
+tenToOne
+```
+
+```{r}
+multiplyBy<- function(number1, number2){
+  number1*number2
+}
+
+multiplyBy(oneToTen, tenToOne)
+
+numberDat<- cbind.data.frame(oneToTen, tenToOne)
+numberDat$multiply<- multiplyBy(oneToTen, tenToOne)
 
 ```
 
@@ -231,22 +276,27 @@ We can make functions with more than one argument. For instance we could multipl
 
 1. Make a function that divides numbers by 100. 
 ```{r}
-
+divide100<- function(number){
+  number/100
+}
 ```
 
 2. Test your function on the mtcars mpg column.
 ```{r}
-
+data(mtcars)
+divide100(mtcars$mpg)
 ```
 
 3. Make a function that finds the mean of a column and divides it by the standard deviation of another column.
 ```{r}
-
+columnMean<- function(number1, number2){
+  mean(number1)/sd(number2)
+}
 ```
 
 4. Test it on the mpg column and hp column. 
 ```{r}
-
+columnMean(mtcars$mpg, mtcars$hp)
 ```
 
 ## Learning Outcome 4: Create your own for loop
