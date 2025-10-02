@@ -307,12 +307,18 @@ Let's say we wanted to create a column in the chickweight dataset that indicated
 
 We'd have to make a new column
 ```{r}
-
-
+data("ChickWeight")
+summary(as.factor(ChickWeight$Time))
+#beginning will be days 0,2,4
+#end will be days 18,20,21
+ChickWeight$beginEnd<- NA
 ```
 and then fill in that new column by indexing the days column, which has 12 different days. 
 ```{r}
-
+ChickWeight$beginEnd[ChickWeight$Time== 0]<- "beginning"
+ChickWeight$beginEnd[ChickWeight$Time==2]<- "beginning"
+ChickWeight$beginEnd[ChickWeight$Time==4]<- "beginning"
+ChickWeight$beginEnd[ChickWeight$Time>16]<-"end"
 ```
 
 We could use a **for loop** though to go through each row of the data set and fill out the new column (beginning or end) based on the days in the Time column.
@@ -326,24 +332,40 @@ individual and bigger group are kind of vague- the idea is that the first part (
 
 to make our for loop closer to code:
 
-for (i in ChickWeight){
+for(i in 1:nrow(ChickWeight)){
 think we want to do
 }
 
 ```{r}
-
+for(i in 1:nrow(ChickWeight)){
+  ChickWeight$beginEnd[i]<-ChickWeight$Time[i]>10
+}
 ```
 
 ### Practice for Learning Outcome 4: 
 
 1. Create a for loop that will multiply each number in a vector by 4. Test it with a vector containing the numbers 10:100. 
 ```{r}
+vectNum<- 10:100
+number<- NA
+for(i in 1:length(vectNum)){
+  number[i]<-vectNum[i]*4 #create a vector to save the output
+}
 
+for(placeholder in 1:length(vectNum)){
+  print(vectNum[placeholder]*4) #output the results to the console
+}
+number
+
+vectNum*4
 ```
 
 2. Create a new column in the mtcars data set that indicated whether a car has good mileage (over 25 mpg) or bad mileage (25 mpg or fewer).  
 ```{r}
-
+mtcars$mpgAbove25<- NA
+for(i in 1:nrow(mtcars)){
+  mtcars$mpgAbove25[i] <- mtcars$mpg[i] > 25  
+}
 ```
 
 ## Learning Outcome 5: Create your own if statements and ifelse statments
@@ -357,19 +379,24 @@ if(condition){
 what you want to happen 
 }
 
-Let's try one: in this case, we'll make an if statement to milage
+Let's try one: in this case, we'll make an if statement to mileage
 ```{r}
-
+mtcars$above25<- NA
+for(i in 1:nrow(mtcars)){
+  if(mtcars$mpg[i]>25){
+    mtcars$above25[i]<- "good mileage"
+  }  
+}
 ```
 ### else statement
 ```{r}
-
+for(i in 1:nrow(mtcars)){
+  if(mtcars$mpg[i]>25){
+    mtcars$above25[i]<- "good mileage"
+  } else{mtcars$above25[i]<- "bad mileage"}
+}
 ```
 
-### bringing it all together
-```{r}
-
-```
 ### ifelse statements
 R lets you combine if/else statements into a single function, ifelse(). 
 
@@ -377,8 +404,7 @@ R lets you combine if/else statements into a single function, ifelse().
 
 We can use this to accomplish the same thing we did above:
 ```{r}
-#ifelse(condition, what happens if it's true, what happesn if it's false)
-
+mtcars$above25pt2<-ifelse(mtcars$mpg>25, "good mileage","bad mileage")
 ```
 
 ### Learning Outcome 5 Practice: 
@@ -387,11 +413,7 @@ We can use this to accomplish the same thing we did above:
 ```{r}
 
 ```
-for(){
-  if(){
-    
-  }else{}
-}
+
 2. create a new column in the mtcars data set to indicate whether a car has a manual or automatic transmission. 
 ```{r}
 
