@@ -1,0 +1,241 @@
+---
+title: "Case Study #1 - Fall 2024"
+author: "Amanda Mae Woodward"
+date: "2024-10-13"
+output: html_document
+---
+
+# Case Study:
+
+## Instructions:
+
+The purpose of this case study is to allow you to apply both your statistical knowledge and problem-solving skills to a real-world example. This assignment will build off technical assignments 1 – 5. **You are expected to complete the assignment independently.** Should you have any questions or programming issues, you should email your lab section TA, lecture TA, and Dr. Woodward on the same email (see information about how to cc people on emails). Discussing this case study with your peers prior to the peer review is considered academic dishonesty. Likewise, you should cite and explain any outside sources you use or you will not receive credit.
+
+As a reminder, there can be more than one accurate way to solve a problem. You will be graded 1) whether you get the correct answer, 2)the ways you work to solve the problem and 3) your ability to articulate your problem-solving process.
+
+## Honor Code:
+
+Please write the following sentence and your initials.
+
+"I certify that any work I hand in below is mine and that I have adhered to the ideals of academic integrity" (1 point)
+
+**your text here**
+
+## File submission
+
+Please submit a knitted version of your assignment (2 points). If you are unable to knit, please submit the R Markdown file.
+
+## Scenario:
+
+Data were collected in the last year on student mental health. These data were shared on Kaggle, with the hopes that someone could draw conclusions from the data. Your job will be to help them make sense of their data. For your case study, you will be asked to do the following: 
+  a.	Identify the appropriate statistics to calculate for each question they have
+  b.	Calculate the necessary statistics
+  c.	Create a visual that corresponds to the statistic you’ve identified
+  d.	An explanation for your choices 
+
+The dataset includes the following variables:
+
+-   stressLevel: The level of stress experienced by the individual.
+
+-   depressionScore: The score representing the level of depression experienced by the individual.
+
+-   anxietyScore: The score representing the level of anxiety experienced by the individual.
+
+-   sleepQuality: The quality of sleep experienced by the individual.
+
+-   physicalActivity: The level of physical activity .
+
+-   dietQuality: The quality of the individual's diet.
+
+-   socialSupport: The level of social support received by the individual.
+
+-   substanceUse: The frequency of substance use such as alcohol, cigarettes or other drugs.
+
+-   familyHistory: Whether the individual has a family history of mental health issues.
+
+-   financialStress: The level of financial stress experienced by the individual (between 0 and 5).
+
+-   creditLoad: The number of credits the individual is taking in the semester.
+
+1. Upload the dataset (2 points)
+```{r}
+#your code here
+```
+
+### Part 1: 
+The team wants to describe undergraduates' sleep. Specifically, they want to understand how most undergraduates sleep.
+
+2. Print the column that likely relates to this question. (2 points)
+```{r}
+#your code here
+```
+
+3. What type of data are included in this column? Be sure to include the specific level of measurement and an explain your choice. (2 points)
+
+**your text here** 
+
+4. Create a visual of these data (5 points) 
+```{r}
+
+```
+
+5. Which statistic(s) would be most appropriate to describe these data? Explain why. (2 points)
+
+**your text here** 
+
+6. Calculate the statistic(s) you identified in the previous question. (3 points)
+
+```{r}
+
+```
+
+7. The team wants to know if the statistic you calculated matches the information in the graph you created. Indicate whether these match and explain how you know (2 points)
+
+**your text here**
+
+## Part 2: 
+
+The team wants to know more about students' credit load, with the idea that understanding this variable may help them relate workload to mental health. Specifically, they want to use this information to see if there is an optimal credit load for students. 
+
+8. What column do you think will best address their questions? Why do you think so? (1 point)
+
+**your text here**
+
+9.What level of measurement was used to collect these data. Explain why you think so. (3 points)
+
+**your text here**
+
+10. Create a visual of the data.(3 points)
+
+```{r}
+
+```
+
+11. How would you describe the shape of this distribution? Explain your reasoning (2 points)
+
+**your text here**
+
+12. The team wants to know about the center of the data. What statistic(s) would be best? Explain why. (3 points)
+
+**your text here**
+
+13. Calculate the statistic(s) you mentioned above (2 points)
+
+```{r}
+#your code here
+```
+
+14. Provide a one sentence summary for the team, who have never taken a statistics course, so that they understand credit load better. (3 points)
+
+**your text here**
+
+15. The team want to know if the statistic(s) you calculated to understand the center of the data provide a full picture about credit load. What other statistic, if any, do you think they need to know to understand the distribution of credit load? Explain why this information is helpful.(3 points)
+
+**your text here**
+
+16. Calculate the additional statistic(s) to help the team understand their data better (2 points)
+
+```{r}
+#your code here
+```
+
+17.Interpret the statistic(s) you calculated so the team can understand. (2 points)
+
+**your text here**
+
+## Part 3: 
+
+This team was hoping to compare the depression scores in this sample with depression scores collected from students at another university. The dataset you have access to used a scale from 0-5. The other group, however, messed up and used a scale from 0-10. Your team is worried that they won't be able to compare scores across the schools and will need to throw out the second rating set.
+
+18. Based on what you've learned, is there a way they can compare the two sets of scores? Write a sentence or two explaining to the executives whether or not they need to get rid of data? (3 points)
+
+**your text here**
+
+19. Perform any calculations that would make your rating set comparable to the other rating set (don't worry about the other set for now). Save this information to your dataset.  (3 points)
+
+```{r}
+#your code here
+```
+
+20. Create a graph that displays the statistic(s) you calculated in the previous question. (3 points)
+
+```{r}
+#your code here
+```
+
+21. The team is confused. Their rating scale goes from 0 to 5, but that doesn't appear to match the visual you created. How can you explain this to them? (4 points)
+
+**your text here**
+
+22. Describe the distribution in your graph to the team. (2 points)
+
+**your text here**
+
+### Part 4: 
+
+Your team is interested in better understanding stress levels of students. They want to know how likely it would be for a student's stress level to be less than 2, assuming a normal distribution. 
+
+23. They want to know the z score for a stresslevel of 2 (hint: you can use information from your dataset's scores). (2 points)
+
+```{r}
+
+```
+
+24. What percentage of students had stress levels equal to this student or lower? (4 points)
+
+```{r}
+#your code here
+```
+**your text here**
+
+25. The team is also worried about the bottom 20% of depression scores. What is the highest score associated with the bottom 20%? (6 points)
+
+```{r}
+#your code here
+```
+**your text here**
+
+26. How many people's depression scores (rounded to the whole number) fall above a depression score of 4.82? (6 points)
+
+```{r}
+
+```
+**your text here**
+
+### Part 5: 
+The team is also interested in getting a better understanding of students' anxiety scores. Specifically, they want to know if students in this sample have a lower anxiety score than other undergraduate students. They happen to know that the average level of anxiety in undergraduates is 3.25 with a standard deviation of 2.5
+
+27. What is the research question they are trying to address? (3 points)
+
+**your text here**
+
+28. Write out your null and alternative hypotheses in words (4 points). 
+
+**your text here**
+
+29. What type of statistic will allow you to answer this? Why? (2 points)
+
+**your text here**
+
+30. What theoretical concepts allow us to compare our sample to the population? (2 points)
+
+**your text here**
+
+31. The team doesn't really understand what sampling distributions are. Explain to them what a sampling distribution is and how it can be used to help address their specific question. (5 points)
+
+**your text here**
+
+### Part 6:
+The team is already starting to plan their next study. They think that whether people  attend therapy will affect their distress levels. They plan to have half of the people in their sample attend therapy for 6 weeks and the other half will not attend therapy. People's distress levels will be collected after the 6 weeks
+
+32. What is the research question (1 point)
+
+**your text here**
+
+33. What is the independent variable (2 points)
+
+**your text here**
+
+34. What is the dependent variable (2 points)
+
+**your text here**
