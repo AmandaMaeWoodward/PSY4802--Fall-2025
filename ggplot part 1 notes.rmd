@@ -21,21 +21,22 @@ We've already talked about how to transform data into wide and long format. For 
 **summarySE**
 To do this, we're going to use a function called `summarySE()`. It's in the Rmisc package
 ```{r}
-
+library(Rmisc)
 ```
 
 We'll try this with the diamonds dataset (located in ggplot). Specifically, we'll create a summary of price by color. 
 
 Note: If you have a slow computer, make a subset of the diamonds dataset (typically, I use above 1 carat, but choose your favorite dimension)
 ```{r}
-
+library(tidyverse) #load after rmisc
+data(diamonds)
 ```
 
 The structure for summarySE is: 
 
 `summarySE(data, measurevar(the variable you want to summarize), grouping variables, confidence interval)`
 ```{r}
-
+priceByColor<-summarySE(diamonds, measurevar = "price", groupvars = "color")
 ```
 
 alternatively, you can use pipes to summarize your data and get it set up in the format you need for graphing. 
@@ -43,14 +44,26 @@ alternatively, you can use pipes to summarize your data and get it set up in the
 To do this, we could use the `group_by()` function and the `summarise()` function 
 
 ```{r}
-
+diamonds %>% 
+  dplyr::group_by(color) %>%
+  dplyr::summarise(meanPrice= mean(price), sd(price))
 ```
 
 
 ### Learning Outcome 1: Practice 
 1. Open the penguins dataset. Create a dataset containing a summary of the flipper length by species.
 ```{r}
+library(palmerpenguins)
+data(penguins)
+```
 
+```{r}
+penguinFlipper<- summarySE(penguins, measurevar = "flipper_length_mm", groupvars="species", na.rm=TRUE)
+
+pipeVersion<- penguins %>% 
+  group_by(species) %>% 
+  summarise(meanFlipper= mean(flipper_length_mm), stdDev= sd(flipper_length_mm), stdError= sd(flipper_length_mm)/sqrt(nrow(penguins)), lowercI = (mean(flipper_length_mm) - .95*sd(flipper_length_mm))/sqrt(nrow(penguins)), upperCI= (mean(flipper_length_mm) + .95*sd(flipper_length_mm))/sqrt(nrow(penguins)))  
+        #CI = sample mean + confidence level*sample stdev/sqrt n 
 ```
 
 ### General Graphing Notes:
