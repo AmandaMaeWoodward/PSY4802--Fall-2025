@@ -315,18 +315,21 @@ ggplot(diamonds, aes(x= carat,y=price, color=color))+geom_point()
 ####Practice: 
 1. Create a scatter plot of the body mass and flipper length variables. 
 ```{r}
-
+ggplot(penguins, aes(body_mass_g, flipper_length_mm))+geom_point()
 ```
 2. Change the color of the points to your favorite color. 
 ```{r}
+ggplot(penguins, aes(body_mass_g, flipper_length_mm))+geom_point(color="purple3")
 
 ```
 3. Change the shape of the points. 
 ```{r}
+ggplot(penguins, aes(body_mass_g, flipper_length_mm))+geom_point(color="purple3", shape=15)
 
 ```
 4. Add a line of best fit to your scatter plot. 
 ```{r}
+ggplot(penguins, aes(body_mass_g, flipper_length_mm))+geom_point(color="purple3", shape=15)+geom_smooth(method="lm", color="black")
 
 ```
 
@@ -334,15 +337,12 @@ ggplot(diamonds, aes(x= carat,y=price, color=color))+geom_point()
 Line graphs follow a similar to scatterplots, but use the geom_line function. Color customizations follow the same rules as scatterplots. 
 include group in aes
 ```{r}
-
+data("ChickWeight")
+ggplot(ChickWeight, aes(Time, weight, group=Chick))+geom_line()
 ```
 
 ```{r}
-
-```
-#cyl
-```{r}
-
+ggplot(ChickWeight, aes(Time, weight, group=Chick, color=Chick))+geom_line()
 ```
 
 I won't talk as much about these graphs, but happy to answer questions. 
@@ -350,17 +350,33 @@ I won't talk as much about these graphs, but happy to answer questions.
 **Box plots**
 I hope that the pattern is starting to make sense, but the only difference with a box plot is that you'll use `geom_boxplot()`. 
 ```{r}
-
+ggplot(diamonds, aes(price))+ geom_boxplot()
 ```
 
 ```{r}
-
+ggplot(diamonds, aes(color, price))+ geom_boxplot()
 ```
 
 ```{r twoVariableBoxplot}
-
+ggplot(diamonds, aes(color, price))+ geom_boxplot(color= "black", fill="lightblue")
 ```
 
+```{r}
+ggplot(diamonds, aes(color, price))+ geom_boxplot()+geom_jitter()
+```
+
+```{r}
+ggplot(mtcars, aes(as.factor(cyl), mpg))+geom_boxplot()+ geom_jitter()
+```
+
+### Violin plot
+```{r}
+ggplot(diamonds, aes(color, price))+ geom_violin()
+```
+
+```{r}
+ggplot(mtcars, aes(as.factor(cyl), mpg))+geom_violin()+ geom_jitter()
+```
 
 ### Practice: 
 1. Create a boxplot for flipper length.
