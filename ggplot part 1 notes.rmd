@@ -221,10 +221,13 @@ Things I included:
 
 **adding lines** (hline/vline)
 ```{r}
-
+ggplot(priceByColor, aes(color, price))+ geom_bar(stat="identity", fill="lightblue",alpha=.75)+ geom_errorbar(aes(ymin= price - se, ymax= price + se, width=.5 ))+theme_classic()+ geom_hline(yintercept = mean(diamonds$price), size= 1, linetype= "dashed", color= "purple")
 ```
 
 ```{r}
+ggplot(priceByColor, aes(color, price))+ geom_bar(stat="identity", fill="lightblue",alpha=.75)+ geom_errorbar(aes(ymin= price - se, ymax= price + se, width=.5 ))+theme_classic()+ geom_vline(xintercept= "G", color= "green")
+
+ggplot(priceByColor, aes(color, price))+ geom_bar(stat="identity", fill="lightblue",alpha=.75)+ geom_errorbar(aes(ymin= price - se, ymax= price + se, width=.5 ))+theme_classic()+ geom_vline(xintercept= 2, color= "green") #better to explicitly code where the line should go
 
 ```
 
@@ -239,45 +242,57 @@ Things I changed:
 ### Practice: 
 1. Create a bar graph for the species column. 
 2. Change the x and y labels to something that is more informative. 
+```{r}
+ggplot(penguins, aes(species))+geom_bar(color="black", fill="orange") +theme_classic()+ xlab("species")+ ylab("frequency")+ ggtitle("Penguins")
+```
+
+```{r}
+ggplot(penguins, aes(species))+geom_bar(color="black", fill="lightpink") +theme_classic()+labs(title="different species of penguins", x= "species", y="number of penguins") 
+```
 
 ### Adding a second variable to a bar graph: 
 ```{r}
+ggplot(diamonds, aes(color, fill=cut))+ geom_bar()+ theme_classic()
+#stacked bar graph
+ggplot(diamonds, aes(color, fill=cut))+ geom_bar(position=position_dodge())+ theme_classic() #categorical
 
 ```
 
 ```{r}
-
+data(mtcars)
+ggplot(mtcars, aes(cyl, fill=as.factor(mpg)))+geom_bar(position=position_dodge())
 ```
 
 
 **Scatter plot**
 We can make scatter plots using the argument `geom_point()`. We'll make a graph of carat by price. 
 ```{r}
-
+ggplot(diamonds, aes(carat, price))+geom_point()
 ```
 
 ```{r}
-
+ggplot(diamonds, aes(carat, price))+ geom_point(color= "red", fill="lightblue") # fill doesn't work for scatteplots, only color
 ```
 
 ```{r}
-
+ggplot(diamonds, aes(carat, price))+ geom_point(color="lightblue", size = 2, shape= 4)
 ```
 
 #jitter()
 ```{r}
-
+ggplot(mtcars, aes(cyl, gear))+geom_point()
+ggplot(mtcars, aes(cyl, gear))+geom_jitter()#only add this to other graphs to get a sense of variability 
 ```
 
 ### Practice
 - make a scatter plot of bill length and bill depth. 
 ```{r}
-
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm))+ geom_point()
 ```
 
 - modify the graph to include at least 2of the style elements we talked about
 ```{r}
-
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm))+ geom_point(color= "lightpink", size=2, shape=10)
 ```
 
 **Note:**In this case, `geom_point()` is the best option to make our scatter plot. If you work with small datasets, the points may be overlapping and make it look like you have less data. In these cases, you can use `geom_jitter()`, which will offset the dots slightly and allow you to see each participant.  
@@ -285,17 +300,16 @@ We can make scatter plots using the argument `geom_point()`. We'll make a graph 
 **Inserting a regression line**
 We can include a regression line into our graph using `geom_smooth()`.
 ```{r}
-
+ggplot(diamonds, aes(carat,price))+ geom_point()+ geom_smooth(method="lm", size= 1, color="orange", linetype="dashed")
 ```
 We can customize whether the regression line has a confidence interval surrounding it. You may be asking yourself **what confidence interval**. Carat and price are very highly correlated. let's use an mtcars example to see how we can change it. 
 w/ 95% confidence interval shaded
 ```{r}
-
+ggplot(mtcars, aes(mpg, hp))+geom_point()+ geom_smooth(method="lm", se= FALSE)
 ```
 **Changing scatterplots**
-you can change the outline of a dot using "color" 
 ```{r}
-
+ggplot(diamonds, aes(x= carat,y=price, color=color))+geom_point()
 ```
 
 ####Practice: 
