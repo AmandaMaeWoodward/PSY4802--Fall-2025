@@ -18,48 +18,58 @@ It can also be helpful to understand how to modify your legend:
 
 Let's try this on a graph from the diamonds dataset: 
 ```{r}
-
+library(tidyverse)
+ggplot(diamonds, aes(color, price, color= cut))+ geom_point()# not super helpful 
+ggplot(diamonds, aes(color, price, fill=cut)) + geom_boxplot()
 ```
 
 We can also change the location: 
 ```{r}
-
+ggplot(diamonds, aes(color, price, fill=cut)) + geom_boxplot()+ theme(legend.position = "bottom")
 ```
+top, left, right, bottom, or none 
 
 To Change the legend title, you can use a couple of different codes, depending on the type of data: 
 `scale_color_manual(name="Title")` works for scatter plots filled in with a factor
 `scale_fill_manual(name="Title)` should work for a bar graph filled in by a factor
 `scale_color_continuous()` and `scale_fill_continuous()` should work for a numeric fill
 ```{r}
+ggplot(diamonds, aes(color, price, fill=cut)) + geom_boxplot()+ theme(legend.position = "bottom")+ scale_fill_manual(name= "Cut of Diamond", values = c("purple", "blue", "green", "orange", "red", "yellow", ""))
 
 ```
 
 ### Practice:
+```{r}
+library(palmerpenguins)
+data(penguins)
+```
 
 1) make a graph of bill length and bill depth. Include island as a third variable
 ```{r}
-
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color=island))+ geom_point()
 ```
 
 2) Move the legend to the top of the graph
 ```{r}
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color=island))+ geom_point()+ theme(legend.position="top")
 
 ```
 
 3) Remove the legend from the graph 
 ```{r}
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color=island))+ geom_point()+ theme(legend.position= "none")
 
 ```
 
 4) Change the title of the legend
 ```{r}
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color=island))+ geom_point()+theme(legend.position="right")+ scale_color_manual(name = "Penguin Sizes by Island", values= c("purple", "blue", "lightblue"))
 
 ```
 
-
 5) make a graph of bill length and bill depth. Include flipper length as a third variable
 ```{r}
-
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color=flipper_length_mm))+ geom_point()
 ```
 
 ### Learning Outcome 2: Describe how to use facet wrap
@@ -67,39 +77,52 @@ Facet Wrap allows us to incorporate a third variable in another way. Specificall
 
 we need to make a graph and save it 
 ```{r}
+ggplot(diamonds, aes(color, price, color= cut))+ geom_point()
 
+ggplot(diamonds, aes(color, price, fill= cut))+ geom_boxplot()+ facet_wrap(~cut)
 
+ggplot(diamonds, aes(carat,price, color= cut))+ geom_point()+geom_smooth(method="lm", color="black") + facet_wrap(~cut)
+```
+
+```{r}
+ggplot(diamonds, aes(carat, price, color=cut))+ geom_point()+geom_smooth(method="lm")+facet_wrap(~color)
 ```
 
 ### change labels on the axes
 change levels beforehand
 ```{r}
+levels(penguins$species)<- c("Adelie Penguin", "Chinstrap Penguin", "Gentoo Penguin")
 
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm))+ geom_point()+facet_wrap(~species)
 ```
 
 make a vector called labels. use `labeller=as_labeller())` in `facet_wrap()`
 ```{r}
-
+speciesTitle<- c("Adelie Penguin"= "Adelie", "Chinstrap Penguin"="Chinstrap", "Gentoo Penguin"= "Gentoo") #write the current name in the dataset = name you want to present
+ 
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm))+ geom_point()+facet_wrap(~species, labeller= as_labeller(speciesTitle))
 ```
 
 ### Practice: 
 1) create a facet wrap graph to generate a scatterplot of mpg and hp based on the number of cylinders a car has
 ```{r}
-
+ggplot(mtcars, aes(hp, mpg, color=cyl))+geom_point()+facet_wrap(~cyl)
 ```
 
 ### Learning Outcome 3: Explain how to export graphs
 to export graphs, I use the command `ggsave()`
 Specifically, you can use the following arguments: 
 `ggsave("name of graph", width, height, units, dpi)`
-```{r}
-
-```
 I don't usually specify a path in ggsave, but make sure my r code is in the directory I'd like it to be saved in. you can check your working directory by using this code
 ```{r}
-
+getwd()#checkthat you're in your project
+setwd()
+```
+make a graph to save
+```{r}
+ggplot(penguins, aes(body_mass_g, flipper_length_mm, color=species))+ geom_point()+geom_smooth(method="lm")+ scale_color_manual(name="Species of Penguin", values= c("#D7907B", "#6C4B5E", "#BBC7A4"))+ theme_classic()+ xlab("Body Mass in Grams")+ ylab("Flipper Length")+ facet_wrap(~species)+ ggtitle(label = "Graph of Body Mass vs Flipper Length")+ theme(legend.position = "bottom", element_text(size=18))
 ```
 you can change your working directory using this code: 
 ```{r}
-
+ggsave("FinalPrettyPenguinGraph.tiff", width=10, height = 8, units= "in", dpi= 300)
 ```
