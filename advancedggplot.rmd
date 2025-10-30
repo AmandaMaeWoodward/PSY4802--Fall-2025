@@ -13,8 +13,15 @@ For today's learning outcomes, we'll cover:
 Now that we've covered statistics and graphing, we can bring the two together to talk about interactions. We have a couple of options for how to do this, and I'll try to share a few of them as we go through this
 
 First, we need some data. For today, we'll use simulated data:
-```{r}
 
+today we're simulating data on... number of boba shops per state university 
+```{r}
+stateUniversity <- sample(c("UMN", "UMD", "UMich", "KU", "UGA", "NYU", "Rutgers", "URI", "UPenn", "Ohio", "PennState", "UDel","UConn", "UCLA", "UC Riverside", "UC Santa Barbara", "UC Merced", "NDSU", "USC", "UNC"),100, replace = TRUE)
+radius<- abs(rnorm(n = 100, mean = 1, sd=.25))
+boba<- sample(0:25, 100, replace=TRUE)
+studentSize<- sample(15000:50000,100,replace=TRUE)
+schoolClimate<- sample(c("freezing", "snowy","cool", "warm", "hot", "humid"), 100, replace=TRUE)
+studentInterest<- sample(c("very low", "low", "moderate", "high", "really high"), 100, replace=TRUE)
 ```
 
 #create dataset
