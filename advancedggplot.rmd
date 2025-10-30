@@ -16,6 +16,7 @@ First, we need some data. For today, we'll use simulated data:
 
 today we're simulating data on... number of boba shops per state university 
 ```{r}
+set.seed(137)
 stateUniversity <- sample(c("UMN", "UMD", "UMich", "KU", "UGA", "NYU", "Rutgers", "URI", "UPenn", "Ohio", "PennState", "UDel","UConn", "UCLA", "UC Riverside", "UC Santa Barbara", "UC Merced", "NDSU", "USC", "UNC"),100, replace = TRUE)
 radius<- abs(rnorm(n = 100, mean = 1, sd=.25))
 boba<- sample(0:25, 100, replace=TRUE)
@@ -26,7 +27,7 @@ studentInterest<- sample(c("very low", "low", "moderate", "high", "really high")
 
 #create dataset
 ```{r}
-
+bobaDat<- cbind.data.frame(stateUniversity, radius, boba, studentSize, schoolClimate, studentInterest)
 ```
 
 
@@ -35,22 +36,44 @@ In the case where we have two categorical predictors, there are a few options we
 
 load tidyverse
 ```{r}
-
+library(tidyverse)
 ```
 
-then, can create a table with means 
-```{r}
+What are interactions? 
+- changes in an outcome associated with predictor A that vary as a result of the level of predictor B 
+- used in regression and ANOVA (which accomplish the same goal w/ different math and assumptions)
 
+Interactions vs Main Effects: 
+Main effect: effect of a predictor on the outcome on its own (ignoring the other predictors)
+Interactions take other predictors into account
+
+
+categorical variables 
+predict # of boba shops based on school climate & student interest
+
+```{r}
+#standard deviation/ sqrt(sample size)
+stdErr<- function(column){
+  sd(column)/sqrt(length(column))
+}
+summaryBoba<- bobaDat %>%
+  group_by(schoolClimate, studentInterest) %>%
+  dplyr::summarise(Mean= mean(boba), stdev= sd(boba), stderr= stdErr(boba))
 ```
 use this output to create a graph 
+# checking data because something weird happened
+```{r}
+subset(bobaDat, bobaDat$schoolClimate=="cool" & bobaDat$studentInterest=="high") #could also group by and/or use filter in a pipe
+```
+turns out, not weird... the cool & high combo doesn't exist
 
 ```{r}
-
+ggplot(summaryBoba, aes(schoolClimate, Mean, fill= studentInterest))+ geom_bar(stat="identity", position= position_dodge(), width=1)+ geom_errorbar(aes(ymin = Mean- stderr, ymax= Mean+stderr), position=position_dodge2(), width=1)
 ```
 
 Alternatively, could use facet wrap with boxplots
 ```{r}
-
+ggplot(bobaDat, aes(schoolClimate, boba, fill=studentInterest))+ geom_boxplot()+facet_wrap(~studentInterest)
 ```
 
 Finally, could use ggeffects package. Need to load the library
@@ -60,7 +83,9 @@ library(ggeffects)
 
 Then, you can use the `ggpredict(model, terms = effects)` function to get predictions. We save these, and then use the `plot()` function to create an interaction plot
 ```{r}
-
+lm1<- lm(boba~studentInterest*schoolClimate, data=bobaDat)
+a<-ggpredict(lm1, terms= c("studentInterest", "schoolClimate"))
+plot(a)
 ```
 
 #### Categorical variable x continuous variable
@@ -68,23 +93,32 @@ we've already talked about some ways to show these sorts of interactions
 
 using `facet wrap()`
 ```{r}
+#student Interest & studentSize
+
+ggplot(bobaDat, aes(studentSize, boba, color= studentInterest))+ geom_point()+geom_smooth(method="lm")+ facet_wrap(~studentInterest)
 
 ```
 
 using color 
 ```{r}
+ggplot(bobaDat, aes(studentSize, boba, color= studentInterest))+ geom_point()+geom_smooth(method="lm")
 
 ```
 
 using ggeffects package
 ```{r}
+lm2<- lm(boba ~ studentInterest*studentSize  , data=bobaDat)
+a2<- ggpredict(lm2)
+plot(a2)
 
 ```
 
 #### continuous x continuous interaction
 using ggeffects package
 ```{r}
-
+lm3<- lm(boba~ studentSize* radius, data=bobaDat)
+a3<- ggpredict(lm3)
+plot(a3)
 ```
 
 
