@@ -21,7 +21,8 @@ We'll use data from a student mental health survey collected last year.
 ## Import the data
 
 ```{r}
-
+library(readr) 
+smh <- read_csv("students_mental_health_survey fall 2025.csv")
 ```
 
 
@@ -32,22 +33,24 @@ We've gone through some of these already, but I want to make sure we're on the s
 
 ##### Mean 
 ```{r}
+mean(smh$stressLevel)
 
+mean(smh$stressLevel, na.rm = TRUE)
 ```
 ##### Median
 ```{r}
-
+median(smh$stressLevel)
 ```
 
 ##### Mode
-
 ```{r}
-
+library(modeest)
+mfv(smh$stressLevel)
 ```
 
 ##### Pipes
 ```{r}
-
+smh %>% summarize(meanStress= mean(stressLevel), medianStress = median(stressLevel), modeStress= mfv(stressLevel))
 ```
 
 
@@ -56,27 +59,38 @@ We've gone through some of these already, but I want to make sure we're on the s
 
 ##### Range
 ```{r}
-
+range(smh$stressLevel)
+5-0 #hard coding 
+range(smh$stressLevel)[2]- range(smh$stressLevel)[1] #soft coding
 ```
 
 ##### Interquartile Range
 ```{r}
-
+IQR(smh$stressLevel) #difference between 75% and 25%
 ```
 
 ##### Standard Deviation
 ```{r}
-
+sd(smh$stressLevel) #typical distance of a score to the mean and/or giving a sense of average dispersion in measured units
 ```
 
 ##### Variance
 ```{r}
+var(smh$stressLevel) #typical distance in squared units 
+```
 
+##### Pipes
+```{r}
+smh %>% summarize(stDev= sd(stressLevel), variance= var(stressLevel), InterquartileRange= IQR(stressLevel), range= range(stressLevel)[2]- range(stressLevel)[1])
 ```
 
 ##### Summary
 ```{r}
-
+summary(smh$stressLevel)
+```
+##### bringing it all together
+```{r}
+smh %>% group_by(sleepQuality) %>% summarize(meanstress= mean(stressLevel), stDev= sd(stressLevel))
 ```
 
 #### Z Score
@@ -84,34 +98,40 @@ We've gone through some of these already, but I want to make sure we're on the s
 The other thing that we'll put in this section is how to create a z score in your data. This allows us to view one score relative to others, even if they are collected from different distributions
 
 ```{r}
-
+smh$stressLevelZ<- scale(smh$stressLevel)
+smh$centeredStress<-scale(smh$stressLevel, center=TRUE, scale = FALSE) #this will give us the difference from the mean; not in standard deviation units
+#z score = scsore- mean/standard deviation
+#mean centered = score-mean
+smh %>% select(stressLevel, stressLevelZ, centeredStress)
 ```
 
 ##### Learning Outcome 1 Practice
 1) calculate the mean, median, and mode for any data in the our Dataset
 ```{r}
-
-
+#cortisol 
+mean(smh$cortisolLevel)
+median(smh$cortisolLevel)
+mfv(smh$cortisolLevel)
 ```
 
 2) what do you notice about these scores? (are they the same? different?)
-
+mostly similar
 ```{r}
-
+ggplot(smh, aes(cortisolLevel))+ geom_histogram( bins=10)
 ```
 
 3) create z scores for any data in our Dataset. Interpret what participant 3's z score means. 
 ```{r}
-
+smh$cortisolLevelZ<- scale(smh$cortisolLevel)
 ```
 
 ```{r}
-
+smh$cortisolLevelZ[smh$Participant==3]
 ```
 
  *Challenge* Graph your data and include the mean median and mode on the graph 
 ```{r}
-
+ggplot(smh, aes(cortisolLevel))+ geom_histogram() + geom_vline(xintercept = mean(smh$cortisolLevel), color="orchid", size= 1)+ theme_classic()+ geom_vline(xintercept = median(smh$cortisolLevel), size= 1, linetype="dashed", color= "orchid4")+ geom_vline(xintercept = mfv(smh$cortisolLevel), color="wheat", size= 1)
 ```
 
 ### Learning Outcome 2: Conduct common parametric analyses in R
@@ -122,28 +142,30 @@ Now that we have covered some descriptive statistics, we'll talk about parametri
 We'll practice running correlations using the dataset above. To do this, we'll look at the correlation between fishavailable and temperature
 `cor(x, y)`
 ```{r}
-
+cor(smh$stressLevel, smh$cortisolLevel)
 ```
+
+```{r}
+ggplot(smh, aes(stressLevel, cortisolLevel))+ geom_point()
+```
+
 **Note:** It's great that we can see the correlation between these two measures, but we don't have any additional information, ie information related to significance.We can use another function, `cor.test()`, to get information about significance.
 `cor.test(x,y)`
 ```{r}
-
-```
-graph
-```{r}
-
+cor.test(smh$stressLevel, smh$cortisolLevel)
 ```
 
-We can change whether we our conducting a one tailed or a two tailed test by including an additional argument "alternative." It defaults to a two tailed test, but we can specify a one tailed test in either direction ("greater" or "less"). The default is "two.sided" 
+We can change whether we our conducting a one tailed or a two tailed test by including an additional argument "alternative." It defaults to a two tailed test, but we can specify a one tailed test in either direction (`"greater"` or `"less"`). The default is `"two.sided"` 
 ```{r}
-
+cor.test(smh$stressLevel, smh$cortisolLevel, alternative = "greater")
 ```
 
 ### Extra Code about Correlation Tables 
 `cor()` can also be used to create correlation matrices, but need to create a dataframe that is just the variables you'd like to use. 
 `cor(data)`
 ```{r}
-
+smhSmall<- smh %>% select(cortisolLevel, stressLevel, creditLoad) 
+cor(smhSmall)
 ```
 for heat map of correlations see: http://www.sthda.com/english/wiki/ggplot2-quick-correlation-matrix-heatmap-r-software-and-data-visualization 
 
@@ -154,13 +176,19 @@ We can run a variety of t-tests using the same function `t.test()`.
 A one sample t test can be computed by specifying mu in the arguments. 
 `t.test(variable, mu)`
 ```{r}
-
+t.test(smh$stressLevel, mu= 2.5, alternative= "less")
 ```
 
 ##### two samples t-test
 There are two ways we can use this function when we have two variables (independent or paired). The first is to type our x and y variables in as we did in the correlation function above. 
 ```{r}
+levels(as.factor(smh$sleepQuality))
 
+goodBadSleep<- smh %>% filter(sleepQuality=="Poor" | sleepQuality == "Good")
+
+#t.test(group 1, group2)
+# formula approach
+t.test(stressLevel~ sleepQuality, data= goodBadSleep) #no equal variance assumption
 ```
 You'll notice that the top of the t-test output says "Welch's Two sample t-test." This R function automatically assumes that the variances of each group are unequal. If we wanted to run a traditional paired-samples t-test, we need to include another argument. 
 
@@ -169,13 +197,19 @@ we can type them in as a formula in R. Formulas typically take the form y ~ x. T
 `t.test(dependent variable ~ indepedent variable, data= dataframe)`
 
 ```{r}
-
+t.test(stressLevel~ sleepQuality, data= goodBadSleep, var.equal=TRUE)
 ```
 If our data were dependent between observations, we'll run a paired samples t test. The code looks pretty similar to above, but we'll use an additional argument. 
 
 let's use the sleep datset as an example
 ```{r}
+data(sleep)
 
+t.test(extra~ group, data=sleep, paired=TRUE) #doesn't work on some versions 
+
+sleepWide<- pivot_wider(sleep, id_cols= "ID", values_from= "extra", names_from= "group")
+
+t.test(sleepWide$`1`, sleepWide$`2`, paired=TRUE)
 ```
 
 Finally, we some times run one tailed vs two tailed tests, just like we did with the correlations. 
